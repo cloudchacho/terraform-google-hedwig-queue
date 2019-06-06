@@ -23,7 +23,8 @@ module "consumer-dev-myapp" {
 }
 ```
 
-It's recommended that `queue` include your environment. 
+If using a single Google project for multiple environments (e.g. dev/staging/prod), ensure that `queue` includes 
+your environment name.
 
 Naming convention - lowercase alphanumeric and dashes only.
 
