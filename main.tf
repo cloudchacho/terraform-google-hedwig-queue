@@ -31,6 +31,8 @@ resource "google_pubsub_subscription" "dlq_subscription" {
 resource "google_monitoring_alert_policy" "high_message_alert" {
   count = "${var.alerting == "true" ? 1 : 0}"
 
+  project = "${var.alerting_project}"
+
   display_name = "${title(var.queue)} Hedwig queue message count too high"
   combiner     = "OR"
 
@@ -60,6 +62,8 @@ resource "google_monitoring_alert_policy" "high_message_alert" {
 
 resource "google_monitoring_alert_policy" "dlq_alert" {
   count = "${var.alerting == "true" ? 1 : 0}"
+
+  project = "${var.alerting_project}"
 
   display_name = "${title(var.queue)} Hedwig DLQ is non-empty"
   combiner     = "OR"

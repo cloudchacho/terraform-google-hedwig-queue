@@ -12,6 +12,11 @@ variable "alerting" {
   default     = "false"
 }
 
+variable "alerting_project" {
+  description = "The project where alerting resources should be created (defaults to current project)"
+  default     = ""
+}
+
 variable "queue_alarm_high_message_count_threshold" {
   description = "Threshold for alerting on high message count in main queue"
   default     = 5000
