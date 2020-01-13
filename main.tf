@@ -10,6 +10,10 @@ resource "google_pubsub_subscription" "subscription" {
 
   ack_deadline_seconds = 20
 
+  expiration_policy {
+    ttl = ""
+  }
+
   labels = "${var.labels}"
 }
 
@@ -24,6 +28,10 @@ resource "google_pubsub_subscription" "dlq_subscription" {
   topic = "${google_pubsub_topic.dlq_topic.name}"
 
   ack_deadline_seconds = 20
+
+  expiration_policy {
+    ttl = ""
+  }
 
   labels = "${var.labels}"
 }
