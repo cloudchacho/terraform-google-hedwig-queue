@@ -12,3 +12,6 @@
 
 # emacs
 .dir-locals.el
+
+# terraform
+.terraform

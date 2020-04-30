@@ -1,7 +1,7 @@
 resource "google_pubsub_topic" "topic" {
   name = "hedwig-${var.queue}"
 
-  labels = "${var.labels}"
+  labels = var.labels
 }
 
 data "google_iam_policy" "topic_policy" {
@@ -17,15 +17,15 @@ data "google_iam_policy" "topic_policy" {
 }
 
 resource "google_pubsub_topic_iam_policy" "topic_policy" {
-  count = "${var.iam_service_account == "" ? 0 : 1}"
+  count = var.iam_service_account == "" ? 0 : 1
 
-  policy_data = "${data.google_iam_policy.topic_policy.policy_data}"
-  topic       = "${google_pubsub_topic.topic.name}"
+  policy_data = data.google_iam_policy.topic_policy.policy_data
+  topic       = google_pubsub_topic.topic.name
 }
 
 resource "google_pubsub_subscription" "subscription" {
   name  = "hedwig-${var.queue}"
-  topic = "${google_pubsub_topic.topic.name}"
+  topic = google_pubsub_topic.topic.name
 
   ack_deadline_seconds = 20
 
@@ -33,7 +33,7 @@ resource "google_pubsub_subscription" "subscription" {
     ttl = ""
   }
 
-  labels = "${var.labels}"
+  labels = var.labels
 }
 
 data "google_iam_policy" "subscription_policy" {
@@ -49,16 +49,16 @@ data "google_iam_policy" "subscription_policy" {
 }
 
 resource "google_pubsub_subscription_iam_policy" "subscription_policy" {
-  count = "${var.iam_service_account == "" ? 0 : 1}"
+  count = var.iam_service_account == "" ? 0 : 1
 
-  policy_data  = "${data.google_iam_policy.subscription_policy.policy_data}"
-  subscription = "${google_pubsub_subscription.subscription.name}"
+  policy_data  = data.google_iam_policy.subscription_policy.policy_data
+  subscription = google_pubsub_subscription.subscription.name
 }
 
 resource "google_pubsub_topic" "dlq_topic" {
   name = "hedwig-${var.queue}-dlq"
 
-  labels = "${var.labels}"
+  labels = var.labels
 }
 
 data "google_iam_policy" "dlq_topic_policy" {
@@ -74,15 +74,15 @@ data "google_iam_policy" "dlq_topic_policy" {
 }
 
 resource "google_pubsub_topic_iam_policy" "dlq_topic_policy" {
-  count = "${var.iam_service_account == "" ? 0 : 1}"
+  count = var.iam_service_account == "" ? 0 : 1
 
-  policy_data = "${data.google_iam_policy.dlq_topic_policy.policy_data}"
-  topic       = "${google_pubsub_topic.dlq_topic.name}"
+  policy_data = data.google_iam_policy.dlq_topic_policy.policy_data
+  topic       = google_pubsub_topic.dlq_topic.name
 }
 
 resource "google_pubsub_subscription" "dlq_subscription" {
   name  = "hedwig-${var.queue}-dlq"
-  topic = "${google_pubsub_topic.dlq_topic.name}"
+  topic = google_pubsub_topic.dlq_topic.name
 
   ack_deadline_seconds = 20
 
@@ -90,7 +90,7 @@ resource "google_pubsub_subscription" "dlq_subscription" {
     ttl = ""
   }
 
-  labels = "${var.labels}"
+  labels = var.labels
 }
 
 data "google_iam_policy" "dlq_subscription_policy" {
@@ -106,8 +106,8 @@ data "google_iam_policy" "dlq_subscription_policy" {
 }
 
 resource "google_pubsub_subscription_iam_policy" "dlq_subscription_policy" {
-  count = "${var.iam_service_account == "" ? 0 : 1}"
+  count = var.iam_service_account == "" ? 0 : 1
 
-  policy_data  = "${data.google_iam_policy.dlq_subscription_policy.policy_data}"
-  subscription = "${google_pubsub_subscription.dlq_subscription.name}"
+  policy_data  = data.google_iam_policy.dlq_subscription_policy.policy_data
+  subscription = google_pubsub_subscription.dlq_subscription.name
 }

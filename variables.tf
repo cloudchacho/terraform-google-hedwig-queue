@@ -4,7 +4,7 @@ variable "queue" {
 
 variable "labels" {
   description = "Labels to attach to the PubSub topic and subscription"
-  type        = "map"
+  type        = map(string)
 }
 
 variable "iam_service_account" {
