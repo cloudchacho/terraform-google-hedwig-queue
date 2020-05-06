@@ -1,3 +1,5 @@
+data google_project current {}
+
 resource "google_pubsub_topic" "topic" {
   name = "hedwig-${var.queue}"
 
@@ -34,17 +36,28 @@ resource "google_pubsub_subscription" "subscription" {
   }
 
   labels = var.labels
+
+  dead_letter_policy {
+    dead_letter_topic     = "projects/${data.google_project.current.project_id}/topics/hedwig-${var.queue}-dlq"
+    max_delivery_attempts = 5
+  }
 }
 
 data "google_iam_policy" "subscription_policy" {
   binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.subscriber"
+    members = [
+      "serviceAccount:${var.iam_service_account}",
+      "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+    ]
+    role = "roles/pubsub.subscriber"
   }
 
   binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.viewer"
+    members = [
+      "serviceAccount:${var.iam_service_account}",
+      "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+    ]
+    role = "roles/pubsub.viewer"
   }
 }
 
@@ -63,13 +76,19 @@ resource "google_pubsub_topic" "dlq_topic" {
 
 data "google_iam_policy" "dlq_topic_policy" {
   binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.publisher"
+    members = [
+      "serviceAccount:${var.iam_service_account}",
+      "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+    ]
+    role = "roles/pubsub.publisher"
   }
 
   binding {
-    members = ["serviceAccount:${var.iam_service_account}"]
-    role    = "roles/pubsub.viewer"
+    members = [
+      "serviceAccount:${var.iam_service_account}",
+      "serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
+    ]
+    role = "roles/pubsub.viewer"
   }
 }
 
