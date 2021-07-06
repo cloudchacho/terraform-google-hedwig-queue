@@ -12,7 +12,7 @@ creates infra for Hedwig consumer app.
 
 ```hcl
 module "consumer-dev-myapp" {
-  source   = "standard-ai/hedwig-queue/google"
+  source   = "cloudchacho/hedwig-queue/google"
   queue    = "dev-myapp"
   alerting = true
 
@@ -42,8 +42,8 @@ overriding this behavior.
 
 ## Release Notes
 
-[Github Releases](https://github.com/standard-ai/terraform-google-hedwig-queue/releases)
+[Github Releases](https://github.com/cloudchacho/terraform-google-hedwig-queue/releases)
 
 ## How to publish
 
-Go to [Terraform Registry](https://registry.terraform.io/modules/standard-ai/hedwig-queue/google), and Resync module.
+Go to [Terraform Registry](https://registry.terraform.io/modules/cloudchacho/hedwig-queue/google), and Resync module.
