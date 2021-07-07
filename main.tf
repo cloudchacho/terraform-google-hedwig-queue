@@ -1,4 +1,4 @@
-data google_project current {}
+data "google_project" "current" {}
 
 resource "google_pubsub_topic" "topic" {
   name = "hedwig-${var.queue}"
@@ -8,7 +8,7 @@ resource "google_pubsub_topic" "topic" {
 
 data "google_iam_policy" "topic_policy" {
   dynamic "binding" {
-    for_each = var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"]
+    for_each = var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"]
 
     content {
       members = [binding.value]
@@ -17,7 +17,7 @@ data "google_iam_policy" "topic_policy" {
   }
 
   dynamic "binding" {
-    for_each = var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"]
+    for_each = var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"]
 
     content {
       members = [binding.value]
@@ -52,7 +52,7 @@ resource "google_pubsub_subscription" "subscription" {
 data "google_iam_policy" "subscription_policy" {
   binding {
     members = concat(
-      var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"],
+      var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"],
       ["serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"]
     )
     role = "roles/pubsub.subscriber"
@@ -60,7 +60,7 @@ data "google_iam_policy" "subscription_policy" {
 
   binding {
     members = concat(
-      var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"],
+      var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"],
       ["serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"]
     )
     role = "roles/pubsub.viewer"
@@ -81,7 +81,7 @@ resource "google_pubsub_topic" "dlq_topic" {
 data "google_iam_policy" "dlq_topic_policy" {
   binding {
     members = concat(
-      var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"],
+      var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"],
       ["serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"]
     )
     role = "roles/pubsub.publisher"
@@ -89,7 +89,7 @@ data "google_iam_policy" "dlq_topic_policy" {
 
   binding {
     members = concat(
-      var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"],
+      var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"],
       ["serviceAccount:service-${data.google_project.current.number}@gcp-sa-pubsub.iam.gserviceaccount.com"]
     )
     role = "roles/pubsub.viewer"
@@ -116,7 +116,7 @@ resource "google_pubsub_subscription" "dlq_subscription" {
 
 data "google_iam_policy" "dlq_subscription_policy" {
   dynamic "binding" {
-    for_each = var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"]
+    for_each = var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"]
 
     content {
       members = [binding.value]
@@ -125,7 +125,7 @@ data "google_iam_policy" "dlq_subscription_policy" {
   }
 
   dynamic "binding" {
-    for_each = var.iam_service_account == "" ? [] : ["serviceAccount:${var.iam_service_account}"]
+    for_each = var.iam_service_account == "" || var.iam_service_account == null ? [] : ["serviceAccount:${var.iam_service_account}"]
 
     content {
       members = [binding.value]
