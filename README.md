@@ -34,12 +34,6 @@ Please note Google's restrictions (if not followed, errors may be confusing and 
 
 The Google queue and subscription names will be prefixed by `hedwig-`.
 
-## Caveats
-
-Google limits the [lifecycle](https://cloud.google.com/pubsub/docs/subscriber#lifecycle) of a subscription. By default, if a subscription
-has not received any messages in 31 days, it'll be deleted. Terraform currently [does not support](https://github.com/terraform-providers/terraform-provider-google/issues/2507) 
-overriding this behavior.  
-
 ## Release Notes
 
 [Github Releases](https://github.com/cloudchacho/terraform-google-hedwig-queue/releases)
