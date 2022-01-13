@@ -9,7 +9,7 @@ output "subscription_name" {
 }
 
 output "subscription_path" {
-  value       = google_pubsub_subscription.subscription.path
+  value       = google_pubsub_subscription.subscription.id
   description = "Consumer subscription path"
 }
 
@@ -24,6 +24,6 @@ output "dlq_subscription_name" {
 }
 
 output "dlq_subscription_path" {
-  value       = google_pubsub_subscription.dlq_subscription.path
+  value       = google_pubsub_subscription.dlq_subscription.id
   description = "DLQ consumer subscription path"
 }
