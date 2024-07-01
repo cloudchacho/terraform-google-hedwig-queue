@@ -47,6 +47,14 @@ resource "google_pubsub_subscription" "subscription" {
     dead_letter_topic     = "projects/${data.google_project.current.project_id}/topics/hedwig-${var.queue}-dlq"
     max_delivery_attempts = 5
   }
+
+  dynamic "retry_policy" {
+    for_each = var.retry_policy == null ? [] : [1]
+    content {
+      minimum_backoff = var.retry_policy["minimum_backoff"]
+      maximum_backoff = var.retry_policy["maximum_backoff"]
+    }
+  }
 }
 
 data "google_iam_policy" "subscription_policy" {
