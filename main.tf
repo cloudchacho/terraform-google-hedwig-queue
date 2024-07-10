@@ -119,6 +119,14 @@ resource "google_pubsub_subscription" "dlq_subscription" {
     ttl = ""
   }
 
+  dynamic "retry_policy" {
+    for_each = var.retry_policy == null ? [] : [1]
+    content {
+      minimum_backoff = var.retry_policy["minimum_backoff"]
+      maximum_backoff = var.retry_policy["maximum_backoff"]
+    }
+  }
+
   labels = var.labels
 }
 
