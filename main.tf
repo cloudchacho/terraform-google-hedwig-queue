@@ -44,7 +44,7 @@ resource "google_pubsub_subscription" "subscription" {
   labels = var.labels
 
   dead_letter_policy {
-    dead_letter_topic     = "projects/${data.google_project.current.project_id}/topics/hedwig-${var.queue}-dlq"
+    dead_letter_topic     = google_pubsub_topic.dlq_topic.id
     max_delivery_attempts = 5
   }
 
